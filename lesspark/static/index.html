@@ -79,7 +79,7 @@
 
     $('#save').on('click', function() {
       var data = drawnItems.toGeoJSON();
-      $.post('/new_poly', { geojson: data});
+      $.post('/new_poly', { geojson: data}, null, 'json');
       $.getJSON('/next_tile', function(data) {
         showLatLng(data.lat, data.lng);
       })
