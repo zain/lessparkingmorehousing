@@ -29,7 +29,7 @@
     // input: latlong, unique tile
     // list of (lat:float, long:floats) describing closed polygon
 
-    var osmUrl = 'http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
+    var osmUrl = 'http://www.google.com/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
       osmAttrib = 'google',
       osm = L.tileLayer(osmUrl, { maxZoom: 19, attribution: osmAttrib }),
       map = new L.Map('map', {
