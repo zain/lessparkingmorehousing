@@ -35,9 +35,9 @@
 
     var osmUrl = 'https://www.google.com/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
       osmAttrib = 'google',
-      osm = L.tileLayer(osmUrl, { maxZoom: 19, attribution: osmAttrib }),
+      osm = L.tileLayer(osmUrl, { maxZoom: 20, attribution: osmAttrib }),
       map = new L.Map('map', {
-        zoom: 19,
+        zoom: 20,
         zoomControl: false
       }),
       drawnItems = L.featureGroup().addTo(map);
