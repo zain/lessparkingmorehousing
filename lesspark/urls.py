@@ -20,5 +20,5 @@ import mapdraw.views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^new_poly$', mapdraw.views.new_parking_spot),
+    url(r'^new_poly$', mapdraw.views.new_poly),
 ]
