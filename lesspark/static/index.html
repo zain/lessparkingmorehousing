@@ -19,6 +19,10 @@
       margin:15px 0;
       padding: 10px;
     }
+
+    img {
+      border: 1px solid red;
+    }
   </style>
 </head>
 <body>
@@ -64,9 +68,8 @@
     }));
 
     map.on(L.Draw.Event.CREATED, function (event) {
-        var layer = event.layer;
-
-        drawnItems.addLayer(layer);
+      var layer = event.layer;
+      drawnItems.addLayer(layer);
     });
 
     function showLatLng(lat, lng) {
@@ -76,7 +79,7 @@
 
     $('#save').on('click', function() {
       var data = drawnItems.toGeoJSON();
-      $.post('/new_poly', data);
+      $.post('/new_poly', { geojson: data});
       $.getJSON('/next_tile', function(data) {
         showLatLng(data.lat, data.lng);
       })
