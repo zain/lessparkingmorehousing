@@ -1,27 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Leaflet.draw vector editing handlers</title>
-    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.css" />
+  <title>Leaflet.draw vector editing handlers</title>
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.css" />
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <title>Parking Lot Tagger</title>
+
+  <style>
+    #map {
+      width: 800px;
+      height: 600px;
+      border: 1px solid #ccc;
+    }
+
+    #save {
+      margin:15px 0;
+      padding: 10px;
+    }
+  </style>
 </head>
 <body>
-<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+  <div id="map"></div>
+  <button id="save">Save</button>
 
-<script>
+  <script>
+    // input: x y z ints, unique tile
+    // list of (lat:float, long:floats) describing closed polygon
+
     var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: osmAttrib }),
-            map = new L.Map('map', { center: new L.LatLng(51.505, -0.04), zoom: 13 }),
-            drawnItems = L.featureGroup().addTo(map);
-    L.control.layers({
-        'osm': osm.addTo(map),
-        "google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
-            attribution: 'google'
-        })
-    }, { 'drawlayer': drawnItems }, { position: 'topleft', collapsed: false }).addTo(map);
+      osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: osmAttrib }),
+      map = new L.Map('map', { center: new L.LatLng(51.505, -0.04), zoom: 13 }),
+      drawnItems = L.featureGroup().addTo(map);
+
+    osm.addTo(map)
     map.addControl(new L.Control.Draw({
         edit: {
             featureGroup: drawnItems,
@@ -33,7 +48,11 @@
             polygon: {
                 allowIntersection: false,
                 showArea: true
-            }
+            },
+            circle: false,
+            rectangle: false,
+            polyline: false,
+            marker: false
         }
     }));
 
@@ -43,6 +62,9 @@
         drawnItems.addLayer(layer);
     });
 
-</script>
+    $('#save').on('click', function() {
+
+    });
+  </script>
 </body>
 </html>
