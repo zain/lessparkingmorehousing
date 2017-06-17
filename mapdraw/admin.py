@@ -1,7 +1,7 @@
-from django.contrib import admin
+from django.contrib.gis import admin
 from mapdraw.models import ParkingSpot
 
 
-class ParkingSpotAdmin(admin.ModelAdmin):
+class ParkingSpotAdmin(admin.GeoModelAdmin):
     pass
 admin.site.register(ParkingSpot, ParkingSpotAdmin)

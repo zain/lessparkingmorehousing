@@ -1,5 +1,5 @@
-from django.db import models
+from django.contrib.gis.db import models
 
 
 class ParkingSpot(models.Model):
-    geojson = models.TextField()
+    poly = models.PolygonField(null=True)
