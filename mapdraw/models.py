@@ -1,5 +1,5 @@
-from django.contrib.gis.db import models
+from django.db import models
 
 
 class ParkingSpot(models.Model):
-    poly = models.PolygonField()
+    shape = models.TextField()
