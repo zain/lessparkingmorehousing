@@ -16,6 +16,9 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+import mapdraw.views
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^new_parking_poly$', mapdraw.views.new_parking_spot),
 ]
