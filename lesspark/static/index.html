@@ -24,36 +24,38 @@
 </head>
 <body>
   <div id="map"></div>
-  <button id="save">Save</button>
+  <button id="save">Save and get next tile</button>
 
   <script>
-    // input: x y z ints, unique tile
+    // input: latlong, unique tile
     // list of (lat:float, long:floats) describing closed polygon
 
-    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    // var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    //   osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    var osmUrl = 'http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
+      osmAttrib = 'google',
       osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: osmAttrib }),
-      map = new L.Map('map', { center: new L.LatLng(51.505, -0.04), zoom: 13 }),
+      map = new L.Map('map', { center: new L.LatLng(51.505, -0.04), zoom: 19 }),
       drawnItems = L.featureGroup().addTo(map);
 
     osm.addTo(map)
     map.addControl(new L.Control.Draw({
-        edit: {
-            featureGroup: drawnItems,
-            poly: {
-                allowIntersection: false
-            }
-        },
-        draw: {
-            polygon: {
-                allowIntersection: false,
-                showArea: true
-            },
-            circle: false,
-            rectangle: false,
-            polyline: false,
-            marker: false
+      edit: {
+        featureGroup: drawnItems,
+        poly: {
+          allowIntersection: false
         }
+      },
+      draw: {
+        polygon: {
+          allowIntersection: false,
+          showArea: true
+        },
+        circle: false,
+        rectangle: false,
+        polyline: false,
+        marker: false
+      }
     }));
 
     map.on(L.Draw.Event.CREATED, function (event) {
