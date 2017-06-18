@@ -56,3 +56,18 @@ def next_tile(request):
     }
 
     return HttpResponse(json.dumps(output), content_type="application/json")
+
+
+def spots(request):
+    output = {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {"id": spot.id},
+                "geometry": json.loads(spot.poly.geojson),
+            } for spot in ParkingSpot.objects.all()
+        ]
+    }
+
+    return HttpResponse(json.dumps(output), content_type="application/json")
