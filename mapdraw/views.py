@@ -48,7 +48,7 @@ def next_tile(request):
             "features": [
                 {
                     "type": "Feature",
-                    "properties": {},
+                    "properties": {"id": spot.id},
                     "geometry": json.loads(spot.poly.geojson),
                 } for spot in ParkingSpot.objects.filter(poly__distance_lte=(tile.pt, D(mi=1)))
             ]
