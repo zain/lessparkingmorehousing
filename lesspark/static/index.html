@@ -9,6 +9,10 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
   <style>
+    html {
+      background: #333;
+    }
+
     #wrap {
       width: 800px;
       margin: 0 auto;
@@ -17,7 +21,6 @@
     #map {
       width: 100%;
       height: 600px;
-      border: 1px solid #ccc;
     }
 
     #save {
@@ -25,9 +28,10 @@
       padding: 10px;
       font-size: 16px;
       background: #fff;
-      border: 1px solid #666;
+      border: 0;
       outline: 0;
       cursor: pointer;
+      border-radius: 0;
     }
 
     img {
@@ -38,7 +42,7 @@
 <body>
   <div id="wrap">
     <div id="map"></div>
-    <button id="save">Save and get next tile</button>
+    <button id="save"></button>
   </div>
 
   <script>
@@ -82,9 +86,15 @@
     map.on(L.Draw.Event.CREATED, function (event) {
       var layer = event.layer;
       drawnItems.addLayer(layer);
+      if (drawnItems.getLayers().length == 1) {
+        $('#save').text('Tag (1) parking lot');
+      } else {
+        $('#save').text('Tag (' + drawnItems.getLayers().length + ') parking lots');
+      }
     });
 
     function showNextTile() {
+      $('#save').text('No parking lots, show next tile')
       drawnItems.clearLayers();
       $.getJSON('/next_tile', function(data) {
         map.setView(new L.LatLng(data[1], data[0]));
