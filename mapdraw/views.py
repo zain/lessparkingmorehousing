@@ -2,6 +2,7 @@ from random import randint
 import json
 
 from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.measure import D
 from django.contrib.gis.geos import GEOSGeometry
 from django.db.models import F, Avg
 from django.http import HttpResponse
@@ -42,6 +43,16 @@ def next_tile(request):
         'lat': tile.pt.y,
         'lng': tile.pt.x,
         'tile_id': tile.id,
+        'existing': {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": json.loads(spot.poly.geojson),
+                } for spot in ParkingSpot.objects.filter(poly__distance_lte=(tile.pt, D(mi=1)))
+            ]
+        },
     }
 
     return HttpResponse(json.dumps(output), content_type="application/json")
