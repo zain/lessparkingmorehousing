@@ -1,35 +1,47 @@
 from random import randint
 import json
 
+from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import GEOSGeometry
+from django.db.models import F, Avg
 from django.http import HttpResponse
 import mercantile
 
-from mapdraw.models import ParkingSpot
+from mapdraw.models import ParkingSpot, Tile
 
 
 def new_poly(request):
-    if request.method == "POST":
-        feature_collection = json.loads(request.body.decode('utf-8'))
-        for feature in feature_collection['features']:
-            poly = GEOSGeometry(json.dumps(feature['geometry']))
-            ParkingSpot.objects.create(poly=poly)
-        return HttpResponse('ok', content_type="text/plain")
+    if request.method != "POST":
+        return HttpResponse("why don't you POST here", content_type="text/plain")
 
-    return HttpResponse("why don't you POST here", content_type="text/plain")
+    payload = json.loads(request.body.decode('utf-8'))
+
+    feature_collection = payload['geojson']
+    for feature in feature_collection['features']:
+        poly = GEOSGeometry(json.dumps(feature['geometry']))
+        ParkingSpot.objects.create(poly=poly)
+
+    tile_id = payload['tile_id']
+    Tile.objects.filter(id=tile_id).update(times_annotated=F('times_annotated')+1)
+
+    return HttpResponse('ok', content_type="text/plain")
 
 
 def next_tile(request):
-    # the mission
-    ul = (-122.424130, 37.764861)
-    br = (-122.404819, 37.749389)
-    ZOOM = 20
+    avg_annotations = Tile.objects.aggregate(Avg('times_annotated'))['times_annotated__avg']
+    tile_set = Tile.objects.filter(times_annotated__lte=avg_annotations)
 
-    ul_tile = mercantile.tile(*ul + (ZOOM,))
-    br_tile = mercantile.tile(*br + (ZOOM,))
+    if 'close_to' in request.GET and request.GET['close_to'] != 'null':
+        in_tile = Tile.objects.get(id=int(request.GET['close_to']))
+        tile_set = tile_set.annotate(distance=Distance('pt', in_tile.pt)).order_by('distance')
+        tile = tile_set[0]
+    else:
+        tile = tile_set[randint(0, tile_set.count())]
 
-    x = randint(ul_tile.x, br_tile.x)
-    y = randint(ul_tile.y, br_tile.y)
-    lng, lat = mercantile.ul(x, y, 20)
+    output = {
+        'lat': tile.pt.y,
+        'lng': tile.pt.x,
+        'tile_id': tile.id,
+    }
 
-    return HttpResponse("[%s, %s]" % (lng, lat), content_type="application/json")
+    return HttpResponse(json.dumps(output), content_type="application/json")
