@@ -4,10 +4,11 @@
   <title>Parking Lots in the Mission</title>
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.css" />
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-
   <style>
 
     html, body, #map {
@@ -47,8 +48,8 @@
 
       osm.addTo(map);
       $.getJSON('/spots', function(data) {
-        console.log(data);
-        L.geoJSON(data).addTo(map)
+        var union = turf.union.apply(turf, data.features);
+        L.geoJSON(union).addTo(map)
       });
     </script>
   </body>
