@@ -114,7 +114,7 @@
     $('#save').on('click', function() {
       var data = {
         tile_id: tile_id,
-        geojson: drawnItems.toGeoJSON();
+        geojson: drawnItems.toGeoJSON()
       }
       $.post('/new_poly', JSON.stringify(data), showNextTile);
     });
