@@ -9,18 +9,23 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
   <style>
+
     html {
       background: #333;
     }
 
     #wrap {
-      width: 800px;
+      width: 580px;
       margin: 0 auto;
       text-align: center;
     }
+
     #map {
-      width: 100%;
-      height: 600px;
+      height: 580px;
+    }
+
+    #overlay {
+      background: url('mask.png');
     }
 
     #save {
@@ -35,7 +40,7 @@
     }
 
     img {
-      border: 1px solid red;
+      /*border: 1px solid red;*/
     }
   </style>
 </head>
@@ -46,14 +51,12 @@
   </div>
 
   <script>
-    // input: latlong, unique tile
-    // list of (lat:float, long:floats) describing closed polygon
-
     var osmUrl = 'https://www.google.com/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
       osmAttrib = 'google',
-      osm = L.tileLayer(osmUrl, { maxZoom: 20, attribution: osmAttrib }),
+      osm = L.tileLayer(osmUrl, { maxZoom: 19, attribution: osmAttrib }),
       map = new L.Map('map', {
-        zoom: 20,
+        center: new L.LatLng(37.773972, -122.431297),
+        zoom: 19,
         zoomControl: false
       }),
       drawnItems = L.featureGroup().addTo(map);
@@ -93,11 +96,17 @@
       }
     });
 
+    // var overlay = new L.ImageOverlay('/static/mask.png', map.getBounds(), {
+    //   opacity: 0.55,
+    //   interactive: false
+    // }).addTo(map);
+
     function showNextTile() {
       $('#save').text('No parking lots, show next tile')
       drawnItems.clearLayers();
       $.getJSON('/next_tile', function(data) {
         map.setView(new L.LatLng(data[1], data[0]));
+        // overlay.setBounds(map.getBounds());
       })
     }
 
