@@ -9,8 +9,13 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
   <style>
-    #map {
+    #wrap {
       width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    #map {
+      width: 100%;
       height: 600px;
       border: 1px solid #ccc;
     }
@@ -18,6 +23,11 @@
     #save {
       margin:15px 0;
       padding: 10px;
+      font-size: 16px;
+      background: #fff;
+      border: 1px solid #666;
+      outline: 0;
+      cursor: pointer;
     }
 
     img {
@@ -26,8 +36,10 @@
   </style>
 </head>
 <body>
-  <div id="map"></div>
-  <button id="save">Save and get next tile</button>
+  <div id="wrap">
+    <div id="map"></div>
+    <button id="save">Save and get next tile</button>
+  </div>
 
   <script>
     // input: latlong, unique tile
@@ -72,20 +84,20 @@
       drawnItems.addLayer(layer);
     });
 
-    function showLatLng(lat, lng) {
+    function showNextTile() {
       drawnItems.clearLayers();
-      map.setView(new L.LatLng(lat, lng));
+      $.getJSON('/next_tile', function(data) {
+        map.setView(new L.LatLng(data[1], data[0]));
+      })
     }
 
     $('#save').on('click', function() {
       var data = drawnItems.toGeoJSON();
       $.post('/new_poly', JSON.stringify(data));
-      $.getJSON('/next_tile', function(data) {
-        showLatLng(data.lat, data.lng);
-      })
+      showNextTile();
     });
 
-    showLatLng(37.773972, -122.431297);
+    showNextTile();
   </script>
 </body>
 </html>
