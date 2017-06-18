@@ -6,9 +6,14 @@ from django.contrib.gis.measure import D
 from django.contrib.gis.geos import GEOSGeometry
 from django.db.models import F, Avg
 from django.http import HttpResponse
+from django.shortcuts import render
 import mercantile
 
 from mapdraw.models import ParkingSpot, Tile
+
+
+def home(request):
+    return render(request, "index.html")
 
 
 def new_poly(request):
