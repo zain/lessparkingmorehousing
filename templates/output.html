@@ -49,6 +49,7 @@
       osm.addTo(map);
       $.getJSON('/spots', function(data) {
         var union = turf.union.apply(turf, data.features);
+        console.log(turf.area(union) + ' sq meters of parking');
         L.geoJSON(union).addTo(map)
       });
     </script>
