@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Parking Lots in the Mission</title>
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.css" />
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+  <style>
+
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #wrap {
+      width: 580px;
+      margin: 0 auto;
+      text-align: center;
+    }
+  </style>
+
+  <body>
+    <div id="map"></div>
+
+    <script>
+      var osmUrl = 'https://www.google.com/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
+        osmAttrib = 'google',
+        osm = L.tileLayer(osmUrl, { maxZoom: 15, attribution: osmAttrib }),
+        map = new L.Map('map', {
+          center: new L.LatLng(37.773972, -122.431297),
+          zoom: 15,
+        })
+
+      osm.addTo(map);
+      $.getJSON('/spots', function(data) {
+        console.log(data);
+        L.geoJSON(data).addTo(map)
+      });
+    </script>
+  </body>
+</html>
