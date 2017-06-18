@@ -105,7 +105,7 @@
     function showNextTile() {
       $('#save').text('No parking lots, show next tile')
       drawnItems.clearLayers();
-      $.getJSON('/next_tile?tile_id=' + tile_id, function(data) {
+      $.getJSON('/next_tile?close_to=' + tile_id, function(data) {
         tile_id = data.tile_id;
         map.setView(new L.LatLng(data.lat, data.lng));
       })
@@ -116,8 +116,7 @@
         tile_id: tile_id,
         geojson: drawnItems.toGeoJSON();
       }
-      $.post('/new_poly', JSON.stringify(data));
-      showNextTile();
+      $.post('/new_poly', JSON.stringify(data), showNextTile);
     });
 
     showNextTile();
