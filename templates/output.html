@@ -35,6 +35,16 @@
           zoom: 15,
         })
 
+      var mission_ul = new L.LatLng(37.764861, -122.424130)
+      var mission_br = new L.LatLng(37.749389, -122.404819)
+      var bounds = new L.latLngBounds(mission_ul, mission_br);
+
+
+      // create an orange rectangle
+      L.rectangle(bounds, { color: '#fff', fill: false }).addTo(map);
+      // zoom the map to the rectangle bounds
+      map.fitBounds(bounds);
+
       osm.addTo(map);
       $.getJSON('/spots', function(data) {
         console.log(data);
