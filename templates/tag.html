@@ -10,37 +10,51 @@
 
   <style>
 
-    html {
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
       background: #333;
+      position: relative;
     }
 
     #wrap {
-      width: 580px;
+      height: 100vh;
+      width: 100vh;
       margin: 0 auto;
       text-align: center;
+      position: relative;
     }
 
     #map {
-      height: 580px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
     }
 
     #save {
-      margin:15px 0;
-      padding: 10px;
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      margin-top: -10px;
+
       font-size: 16px;
       background: #fff;
       border: 0;
       outline: 0;
       cursor: pointer;
-      border-radius: 0;
+      border-radius: 2px;
     }
   </style>
 </head>
 <body>
   <div id="wrap">
     <div id="map"></div>
-    <button id="save"></button>
   </div>
+  <button id="save"></button>
 
   <script>
     var osmUrl = 'https://www.google.com/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
@@ -93,11 +107,15 @@
     //   interactive: false
     // }).addTo(map);
 
-    var previousLots = L.geoJSON().addTo(map)
+    var previousLots = L.geoJSON(null, {
+      style: function(geoJsonFeature) {
+        return { color: '#26DBB8' };
+      }
+    }).addTo(map)
 
     var tile_id = null;
     function showNextTile() {
-      $('#save').text('No parking lots, show next tile')
+      $('#save').text('No new parking lots, show next tile')
       drawnItems.clearLayers();
       $.getJSON('/next_tile?close_to=' + tile_id, function(data) {
         tile_id = data.tile_id;
