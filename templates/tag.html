@@ -57,9 +57,8 @@
   <button id="save"></button>
 
   <script>
-    var osmUrl = 'https://www.google.com/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
-      osmAttrib = 'google',
-      osm = L.tileLayer(osmUrl, { maxZoom: 19, attribution: osmAttrib }),
+    var osmUrl = 'https://mt{s}.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}&s=Ga',
+      osm = L.tileLayer(osmUrl, { subdomains: '123', maxZoom: 19 }),
       map = new L.Map('map', {
         center: new L.LatLng(37.773972, -122.431297),
         zoom: 19,
