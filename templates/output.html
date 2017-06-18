@@ -30,7 +30,7 @@
     <script>
       var osmUrl = 'https://www.google.com/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
         osmAttrib = 'google',
-        osm = L.tileLayer(osmUrl, { maxZoom: 15, attribution: osmAttrib }),
+        osm = L.tileLayer(osmUrl, { attribution: osmAttrib }),
         map = new L.Map('map', {
           center: new L.LatLng(37.773972, -122.431297),
           zoom: 15,
