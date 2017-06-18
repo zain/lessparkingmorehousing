@@ -101,17 +101,21 @@
     //   interactive: false
     // }).addTo(map);
 
+    var tile_id = null;
     function showNextTile() {
       $('#save').text('No parking lots, show next tile')
       drawnItems.clearLayers();
-      $.getJSON('/next_tile', function(data) {
-        map.setView(new L.LatLng(data[1], data[0]));
-        // overlay.setBounds(map.getBounds());
+      $.getJSON('/next_tile?tile_id=' + tile_id, function(data) {
+        tile_id = data.tile_id;
+        map.setView(new L.LatLng(data.lat, data.lng));
       })
     }
 
     $('#save').on('click', function() {
-      var data = drawnItems.toGeoJSON();
+      var data = {
+        tile_id: tile_id,
+        geojson: drawnItems.toGeoJSON();
+      }
       $.post('/new_poly', JSON.stringify(data));
       showNextTile();
     });
