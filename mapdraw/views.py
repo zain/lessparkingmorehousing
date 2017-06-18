@@ -13,7 +13,11 @@ from mapdraw.models import ParkingSpot, Tile
 
 
 def home(request):
-    return render(request, "index.html")
+    return render(request, "output.html")
+
+
+def tag(request):
+    return render(request, "tag.html")
 
 
 def new_poly(request):

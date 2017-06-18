@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^new_poly$', mapdraw.views.new_poly),
     url(r'^next_tile$', mapdraw.views.next_tile),
     url(r'^spots$', mapdraw.views.spots),
+    url(r'^tag$', mapdraw.views.tag),
     url(r'^$', mapdraw.views.home),
 ]
